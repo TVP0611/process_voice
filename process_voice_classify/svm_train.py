@@ -2,6 +2,7 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.sparse.sputils import matrix
 # %matplotlib notebook
 from sklearn import svm, metrics, datasets
 from sklearn.utils import Bunch
@@ -52,7 +53,7 @@ def load_image_files(container_path, dimension=(64, 64)):
                  images=images,
                  DESCR=descr)
 
-image_dataset = load_image_files("save_spec/")
+image_dataset = load_image_files("D:/Project/process_voice/process_voice_classify/save_spec/")
 
 X_train, X_test, y_train, y_test = train_test_split(
     image_dataset.data, image_dataset.target, test_size=0.3,random_state=109)
@@ -70,8 +71,12 @@ pickle.dump(clf, open("model_svm_audio.pk", 'wb'))
 
 ##################   load model
 clf = pickle.load(open("model_svm_audio.pk", 'rb'))
+# image_test = load_image_files
 y_pred = clf.predict(X_test)
-
+# print(y_pred)
+# print(y_test)
 
 print("Classification report for - \n{}:\n{}\n".format(
     clf, metrics.classification_report(y_test, y_pred)))
+
+print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
